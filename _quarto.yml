@@ -9,7 +9,6 @@ website:
       menu: 
         - text: "Hands-on Ex 1"
           href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html"
-    - text: "In-class Excercise"
     - text: "Take Home Excercise"
       menu: 
         - text: "Take Home Ex 1"
