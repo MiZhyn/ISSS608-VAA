@@ -1,14 +1,15 @@
 ---
 title: "Takehome_ex01"
 Publish: 4/25/2024
-title-block-banner: '#F8F5F0'
-title-block-banner-color: '#325D88'
+title-block-banner: '#003049'
+title-block-banner-color: '#FDF0D5'
 format:
-    html:
-        theme: sandstone
-        embed-resources: true
-        font-color: '#325D88'
-        linestretch: 1.2
+  html:
+    theme: flatly
+    embed-resources: true
+    font-color: '#FDF0D5'
+    linestretch: 1.2
+    backgroundcolor: '#fefefe'
 ---
 
 ```{css,echo = FALSE}
@@ -314,44 +315,54 @@ Creates boxplots with summary statistics, aiming to understand the distribution 
 filter_area <- uniondata %>% 
   filter(Area..SQFT. < 5000)
 
+library(ggplot2)
+library(patchwork)
+
+# Calculate summary statistics for Area..SQFT.
 mean_val <- mean(filter_area$`Area..SQFT.`)
 median_val <- median(filter_area$`Area..SQFT.`)
 q1_val <- quantile(filter_area$`Area..SQFT.`, 0.25)
 q3_val <- quantile(filter_area$`Area..SQFT.`, 0.75)
 
+# Create boxplot for Area..SQFT.
 p1 <- ggplot(filter_area, aes(x = "", y = `Area..SQFT.`)) +
-  geom_boxplot() +
+  geom_boxplot(fill = "#1a80bb") +  # Fill boxplot with color
   stat_summary(fun = "mean", geom = "point", shape = 8,
-               size = 2, color = "#669BBC") +
+               size = 2, color = "#fefefe") +
   annotate("text", x = 0.8, y = max(filter_area$`Area..SQFT.`), 
            label = paste("Mean:", round(mean_val, 2), "\n",
                          "Median:", round(median_val, 2), "\n",
                          "Q1:", round(q1_val, 2), "\n",
                          "Q3:", round(q3_val, 2)), 
            vjust = 1, hjust = 0.5, size = 3) +
-  labs(y = "Area (SQFT)", title = "Boxplot of Area (SQFT)") +
-  theme_minimal()
+  labs(y = "Area (SQFT)", x="",title = "Boxplot of Area (SQFT)") +
+  theme_minimal()+
+  theme( text = element_text(size = 8))
 
+# Calculate summary statistics for Unit.Price....PSF.
 mean_val_psf <- mean(uniondata$`Unit.Price....PSF.`)
 median_val_psf <- median(uniondata$`Unit.Price....PSF.`)
 q1_val_psf <- quantile(uniondata$`Unit.Price....PSF.`, 0.25)
 q3_val_psf <- quantile(uniondata$`Unit.Price....PSF.`, 0.75)
 
-# Unit.Price....PSF.的箱线图
+# Create boxplot for Unit.Price....PSF.
 p2 <- ggplot(uniondata, aes(x = "", y = `Unit.Price....PSF.`)) +
-  geom_boxplot() +
+  geom_boxplot(fill = "#1a80bb") +  # Fill boxplot with color
   stat_summary(fun = "mean", geom = "point", shape = 8,
-               size = 2, color = "#003049") +
+               size = 2, color = "#fefefe") +
   annotate("text", x = 0.8, y = max(uniondata$`Unit.Price....PSF.`), 
            label = paste("Mean:", round(mean_val_psf, 2), "\n",
                          "Median:", round(median_val_psf, 2), "\n",
                          "Q1:", round(q1_val_psf, 2), "\n",
                          "Q3:", round(q3_val_psf, 2)), 
            vjust = 1, hjust = 0.5, size = 3) +
-  labs(y = "Unit Price (PSF)", title = "Boxplot of Unit Price (PSF)") +
-  theme_minimal()
-library(patchwork)
-(p1 + p2) 
+  labs(y = "Price (PSF)", x="", title = "Boxplot of Price (PSF)") +
+  theme_minimal()+
+  theme( text = element_text(size = 8))
+
+# Combine the plots
+(p1 + p2)
+
 ```
 
 ::: callout-note
@@ -417,11 +428,11 @@ df_avg <- uniondata %>%
 # Plot 1
 plot1 <- ggplot(df_avg, aes(x = ym, y = avg_price, fill = Purchaser.Address.Indicator)) +
   geom_col(position = position_dodge()) +
-  scale_fill_manual(values = c("#C83E4D", "#4A5859"),name="Property type") +
-  geom_hline(yintercept = mean(df_avg$avg_price), color = "red", linetype = "dashed") +  
+  scale_fill_manual(values =c("#1a80bb", "#f2c45f"),name="Property type") +
+  geom_hline(yintercept = mean(df_avg$avg_price), color = "#4A5859", linetype = "dashed") +  
   geom_text(aes(x = 1, y = mean(df_avg$avg_price), 
                 label = paste("Avg Price:", round(mean(df_avg$avg_price), 2))), 
-            color = "red", size = 3, hjust = -0.2, vjust = -0.5) + 
+            color = "#4A5859", size = 3.2, hjust = -0.2, vjust = -0.5) + 
   labs(x = "Month", y = "Price(PSF)", title = "Price (PSF) of HDB by Property type and Month") + 
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = "none"
@@ -442,8 +453,8 @@ plot2 <- ggplot(df_count, aes(x = Date, y = Sales, fill = Purchaser.Address.Indi
   geom_text(aes(label = scales::percent(Percentage, accuracy = 1)), 
             position = position_stack(vjust = 0.5), 
             size = 3, 
-            color = "white") + 
-  scale_fill_manual(values = c("#C83E4D", "#4A5859"),name="Property type") +
+            color = "#4A5859") + 
+  scale_fill_manual(values = c("#1a80bb", "#f2c45f"),name="Property type") +
   labs(x = "Month", y = "Sales", title = "Monthly Sales by Property type") +
   theme_classic()+
   theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position = c(0.8, 0.9),legend.title = element_blank(),legend.key.size = unit(0.4, 'cm'), 
@@ -469,7 +480,7 @@ df_avg <- uniondata %>%
 # Plot 1
 plot1 <- ggplot(df_avg, aes(x = ym, y = avg_price, fill = Purchaser.Address.Indicator)) +
   geom_col(position = position_dodge()) +
-  scale_fill_manual(values = c("#C83E4D", "#4A5859"), name = "Property type") +
+  scale_fill_manual(values =  c("#082a54", "#f0c571"), name = "Property type") +
   geom_hline(yintercept = mean(df_avg$avg_price), color = "red", linetype = "dashed") +  
   geom_text(aes(x = 1, y = mean(df_avg$avg_price), 
                 label = paste("Avg Price:", round(mean(df_avg$avg_price), 2))), 
@@ -495,8 +506,8 @@ plot2 <- ggplot(df_count, aes(x = Date, y = Sales, fill = Purchaser.Address.Indi
   geom_text(aes(label = scales::percent(Percentage, accuracy = 1)), 
             position = position_stack(vjust = 0.5), 
             size = 3, 
-            color = "white") + 
-  scale_fill_manual(values = c("#C83E4D", "#4A5859"), name = "Property type") +
+            color = "#4A5859") + 
+  scale_fill_manual(values =  c("#1a80bb", "#f2c45f"), name = "Property type") +
   labs(x = "Month", y = "Sales", title = "Monthly Sales by Property type") +
   theme_classic() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1), 
@@ -571,6 +582,7 @@ Plot2<- data2024 %>%
   ggplot(aes(Planning.Region,Unit.Price....PSF.,fill=Purchaser.Address.Indicator))+
   geom_boxplot() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.position="bottom",text = element_text(size = 8),legend.title = element_blank())+
+  scale_fill_manual(values = c("#1a80bb", "#f2c45f"))
   labs(x = "Region", y = "Price(PSF)")
 
 Plot1+Plot2
@@ -664,9 +676,9 @@ library(ggrepel)
 # Plot
 # Plot
 ggplot(df_Typeprice, aes(x = Area, y = Price)) +
-  geom_point(aes(size = Price, color = Purchaser.Address.Indicator), alpha = 0.6) +
+  geom_point(aes(size = Price, color = Purchaser.Address.Indicator), alpha = 0.7) +
   geom_text_repel(aes(label = Property.Type), size = 2.5) +
-  scale_color_manual(values = c("#C83E4D", "#4A5859"), name = "Property Type") +  # Change legend title
+  scale_color_manual(values = c("#1a80bb", "#f2c45f"), name = "Property Type") +  # Change legend title
   labs(title = "Comparison of Area and Unit Price by Property Type", x = "Area", y = "Price (PSF)") +  # Change axis labels
   theme(text = element_text(size = 10), 
         plot.title = element_text(size = 12, face = "bold"),
@@ -738,7 +750,7 @@ df_Aavg<-df_Aavg[order(df_Aavg$p_z),]
 df_Aavg$Planning.Area<-factor(df_Aavg$Planning.Area,levels=df_Aavg$Planning.Area)
 
 plot11<-ggplot(df_Aavg,aes(x=Planning.Area,y=p_z,label=p_z))+geom_bar(stat="identity",aes(fill=p_ztype),position = position_dodge2(width = 2), width = 0.8)+
-  scale_fill_manual(name="Avergae Price",labels=c("Above Average","Below Average"),values=c("below"="#C83E4D","above"="#4A5859"))+
+  scale_fill_manual(name="Avergae Price",labels=c("Above Average","Below Average"),values=c("above"="#298c8c","below"="#C83E4D"))+
   labs(title = "Unit Price Deviations by Area",y="",subtitle = "Private")+
   coord_flip()+
    theme(legend.position="None",text = element_text(size = 8),plot.title = element_text(size = 12, face = "bold")) 
@@ -754,7 +766,7 @@ df_AHavg<-df_AHavg[order(df_AHavg$p_z),]
 df_AHavg$Planning.Area<-factor(df_AHavg$Planning.Area,levels=df_AHavg$Planning.Area)
 
 plot22<-ggplot(df_AHavg,aes(x=Planning.Area,y=p_z,label=p_z))+geom_bar(stat="identity",aes(fill=p_ztype),position = position_dodge2(width = 2), width = 0.8)+
-  scale_fill_manual(name="Avergae Price",labels=c("Above Average","Below Average"),values=c("below"="#C83E4D","above"="#4A5859"))+
+  scale_fill_manual(name="Avergae Price",labels=c("Above Average","Below Average"),values=c("above"="#298c8c","below"="#C83E4D"))+
   labs(y="",x="",subtitle = "HDB")+
   coord_flip()+
    theme(text = element_text(size = 8),
