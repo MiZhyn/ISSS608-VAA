@@ -1,0 +1,73 @@
+---
+title: "Hands-on_Ex02"
+Published: Apil 15，2024
+---
+
+# 1. Overview
+
+In this chapter, I will practice several ggplot2 extensions to create more elegant and effective statistical graphics.
+
+-   control the placement of annotation on a graph by using functions provided in ggrepel package,
+
+-   create professional publication quality figure by using functions provided in ggthemes and hrbrthemes packages,
+
+-   plot composite figure by combining ggplot2 graphs by using patchwork package.
+
+# 2. Getting start
+
+### **2.1 Installing and loading the required libraries**
+
+```{r}
+pacman::p_load(ggrepel, patchwork, 
+               ggthemes, hrbrthemes,
+               tidyverse) 
+```
+
+## 2.2 **Importing data**
+
+```{r}
+exam_data <- read_csv("Data/Exam_data.csv",show_col_types = FALSE)
+head(exam_data)
+str(exam_data)
+```
+
+## 2.3 **Beyond ggplot2 Annotation: ggrepel**
+
+::: panel-tabset
+# The Plot
+
+```{r}
+#| echo: False
+ggplot(data=exam_data,
+       aes(x=MATHS,
+           y=ENGLISH))+
+  geom_point()+
+  geom_smooth(method=lm,
+              size=0.5)+
+  geom_label(aes(label=ID),
+             hjust=0.5,
+              vjust=-0.5)+
+   coord_cartesian(xlim=c(0,100),
+                    ylim=c(0,100)) 
+ggtitle("English scores versus Maths scores for Primary 3")
+
+```
+
+## The code
+
+```{r}
+#| output: False
+ggplot(data=exam_data,
+       aes(x=MATHS,
+           y=ENGLISH))+
+  geom_point()+
+  geom_smooth(method=lm,
+              size=0.5)+
+  geom_label(aes(label=ID),
+             hjust=0.5,
+              vjust=-0.5)+
+   coord_cartesian(xlim=c(0,100),
+                    ylim=c(0,100)) 
+ggtitle("English scores versus Maths scores for Primary 3")
+```
+:::
