@@ -1,0 +1,107 @@
+---
+title: "Hands on Ex04a"
+---
+
+# **1  Visual Statistical Analysis**
+
+## **1.1 Learning Outcome**
+
+In this hands-on exercise, I will show on to use:
+
+-   ggstatsplot package to create visual graphics with rich statistical information,
+
+-   performance package to visualise model diagnostics, and
+
+-   parameters package to visualise model parameters
+
+## **1.2 Visual Statistical Analysis with ggstatsplot**
+
+[**ggstatsplot**](https://indrajeetpatil.github.io/ggstatsplot/) is an extension of [**ggplot2**](https://ggplot2.tidyverse.org/) package for creating graphics with details from statistical tests
+
+## **1.3 Getting Started**
+
+### **1.3.1 Installing and launching R packages**
+
+```{r}
+pacman::p_load(ggstatsplot, tidyverse)
+```
+
+### **1.3.2 Importing data**
+
+```{r}
+exam <- read_csv("Data/Exam_data.csv",show_col_types = FALSE)
+head(exam)
+```
+
+### **1.3.3 One-sample test: *gghistostats()* method**
+
+```{r}
+set.seed(1234)
+
+gghistostats(
+  data = exam,
+  x = ENGLISH,
+  type = "bayes",
+  test.value = 60,
+  xlab = "English scores"
+)
+```
+
+### **1.3.4 Two-sample mean test: *ggbetweenstats()***
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = GENDER, 
+  y = MATHS,
+  type = "np",
+  messages = FALSE
+)
+```
+
+### **1.3.5 Oneway ANOVA Test: *ggbetweenstats()* method**
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = RACE, 
+  y = ENGLISH,
+  type = "p",
+  mean.ci = TRUE, 
+  pairwise.comparisons = TRUE, 
+  pairwise.display = "s",
+  p.adjust.method = "fdr",
+  messages = FALSE
+)
+```
+
+### **1.3.6 Significant Test of Correlation: *ggscatterstats()***
+
+```{r}
+ggscatterstats(
+  data = exam,
+  x = MATHS,
+  y = ENGLISH,
+  marginal = FALSE,
+  )
+```
+
+### **1.3.7 Significant Test of Association (Depedence) : *ggbarstats()* methods**
+
+```{r}
+exam1 <- exam %>% 
+  mutate(MATHS_bins = 
+           cut(MATHS, 
+               breaks = c(0,60,75,85,100))
+)
+```
+
+In the code chunk below, the Maths scores is binned into a 4-class variable by using [*cut()*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cut).
+
+In this code chunk below [*ggbarstats()*](https://indrajeetpatil.github.io/ggstatsplot/reference/ggbarstats.html) is used to build a visual for Significant Test of Association
+
+```{r}
+ggbarstats(exam1, 
+           x = MATHS_bins, 
+           y = GENDER)
+```

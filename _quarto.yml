@@ -11,8 +11,10 @@ website:
           href: "Hands-on_Ex/Hands-on_Ex01/Hands-on_Ex01.html"
         - text: "Hands-on Ex 2"
           href: "Hands-on_Ex/Hands-on_Ex02/Hands-on_Ex02.html"
-        - text: "Hands-on Ex 3"
-        - text: "Hands-on Ex 3"
+        - text: "Hands-on Ex 3a"
+          href: "Hands-on_Ex/Hands-on_Ex03/HandonEx03.html"
+        - text: "Hands-on Ex 3b"
+          href: "Hands-on_Ex/Hands-on_Ex03/HandonEx03b.html"
         
     - text: "Take Home Excercise"
       menu: 
@@ -20,6 +22,8 @@ website:
           href: "Takehome_Ex/TakeHome Ex01/Takehomeex01.html"
         - text: "Take Home Ex 2"
           href: "Takehome_Ex/TakeHome Ex02/Takehomeex02.html"
+        - text: "Take Home Ex 3"
+          href: "Takehome_Ex/TakeHome Ex03/Takehomeex03.html"
     right: 
       - href: index.qmd
         text: Home
